@@ -2,6 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return view ('welcome');
+});
+
+//route resource for product
+Route::resource('/products', \App\Http\Controllers\ProductController::class);
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +18,3 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
