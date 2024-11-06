@@ -11,17 +11,35 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('product_category_id')->nullable()->index();
-            $table->string('id_supplier');
-            $table->string('image');
-            $table->string('title');
-            $table->text('description');
-            $table->bigInteger('price');
-            $table->integer('stock')->default(0);
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            if (!Schema::hasColumn('products', 'product_category_id')) {
+                $table->unsignedBigInteger('product_category_id')->nullable()->index();
+            }
+            if (!Schema::hasColumn('products', 'id_supplier')) {
+                $table->string('id_supplier');
+            }
+            if (!Schema::hasColumn('products', 'image')) {
+                $table->string('image');
+            }
+            if (!Schema::hasColumn('products', 'title')) {
+                $table->string('title');
+            }
+            if (!Schema::hasColumn('products', 'description')) {
+                $table->text('description');
+            }
+            if (!Schema::hasColumn('products', 'price')) {
+                $table->bigInteger('price');
+            }
+            if (!Schema::hasColumn('products', 'stock')) {
+                $table->integer('stock')->default(0);
+            }
+            // Jangan tambahkan timestamps jika sudah ada
+            if (!Schema::hasColumns('products', ['created_at', 'updated_at'])) {
+                $table->timestamps();
+            }
         });
+        
+        
 
         Schema::create('category_product', function (Blueprint $table) {
             $table->id();
@@ -29,15 +47,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('supplier', function (Blueprint $table) {
-            $table->id();
-            $table->string('supplier_name');
-            $table->string('pic_supplier');
-            $table->string('alamat_supplier');
-            $table->string('no_hp_pic_supplier');
-            $table->timestamps();
-        });
-
+      
     }
 
     /**
